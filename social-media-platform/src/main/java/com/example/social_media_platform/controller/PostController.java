@@ -29,11 +29,11 @@ public class PostController {
     @PostMapping("/{userId}/create")
     public ResponseEntity<String> createPost(
             @PathVariable Long userId,
-            @RequestPart("file") MultipartFile file) {
+            @RequestPart("file") MultipartFile file,@RequestPart("text") String text) {
 
         try {
-            String response = userPostService.createPost(userId, file);
-            return ResponseEntity.ok(response);
+            String response = String.valueOf(userPostService.createPost(userId, file,text));
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (IOException e) {
             return ResponseEntity.status(500).body("Error uploading file: " + e.getMessage());
         } catch (Exception e) {

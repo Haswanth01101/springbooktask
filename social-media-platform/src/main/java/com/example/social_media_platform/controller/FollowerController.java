@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,7 @@ public class FollowerController {
     @DeleteMapping("/unfollow")
     public ResponseEntity<String> unfollowUser(@RequestParam Long followerId, @RequestParam Long followingId) {
         followerService.unfollowUser(followerId, followingId);
-
-        return ResponseEntity.status(HttpStatus.OK).body("Successfully unfollowed user with ID: " + followingId);
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully unfollowed user with ID: " + followingId+ " at " + LocalDateTime.now());
     }
 
     @GetMapping("/{userId}/followers")

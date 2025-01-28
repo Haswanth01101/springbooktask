@@ -4,11 +4,13 @@ import com.example.social_media_platform.entity.Follower;
 import com.example.social_media_platform.entity.User;
 import com.example.social_media_platform.repository.FollowerRepository;
 import com.example.social_media_platform.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Service
 public class FollowerService {
@@ -38,7 +40,7 @@ public class FollowerService {
         followerEntity.setFollowing(following);
         return followerRepository.save(followerEntity);
     }
-
+    @Transactional
     public String unfollowUser(Long followerId, Long followingId) {
         userRepository.findById(followerId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Follower not found"));
@@ -48,7 +50,6 @@ public class FollowerService {
 
         Follower followerEntity = followerRepository.findByFollowerIdAndFollowingId(followerId, followingId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not following this user"));
-
         followerRepository.delete(followerEntity);
         return "Successfully unfollowed user with ID: " + followingId;
     }

@@ -26,15 +26,18 @@ public class Follower {
     @JoinColumn(name = "followingId", insertable = false, updatable = false)
     private User following;
 
+    @CreationTimestamp
+    @Column(name = "followed_at")
+    private LocalDateTime followedAt;
 
     public void setFollower(User follower) {
         this.follower = follower;
         this.followerId = follower.getId();
     }
 
-
     public void setFollowing(User following) {
         this.following = following;
         this.followingId = following.getId();
     }
+
 }

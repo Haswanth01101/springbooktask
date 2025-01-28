@@ -1,6 +1,5 @@
 package com.example.social_media_platform.service;
 
-import com.example.social_media_platform.dto.PostRequestDto;
 import com.example.social_media_platform.entity.Post;
 import com.example.social_media_platform.entity.User;
 import com.example.social_media_platform.repository.PostRepository;
@@ -10,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserPostService {
@@ -18,7 +19,7 @@ public class UserPostService {
     @Autowired
     private UserRepository userRepository;
 
-    public String createPost(Long userId, MultipartFile file) throws IOException {
+    public Map<String, Object> createPost(Long userId, MultipartFile file, String text) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 
@@ -26,8 +27,14 @@ public class UserPostService {
         Post post = new Post();
         post.setUser(user);
         post.setImageUrl(fileName);
+        post.setContent(text);
         postRepository.save(post);
-        return "Post created successfully for user ID: " + userId;
+        Map<String, Object> jsonResponse = new HashMap<>();
+        jsonResponse.put("message", "Post created successfully");
+
+        return jsonResponse;
     }
+
 }
+
 
